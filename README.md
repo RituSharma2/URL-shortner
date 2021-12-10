@@ -1,78 +1,44 @@
-# TOPIC: Middleware2
+# Scalable URL Shortner Project Requirement
+### Phase I
+Overview
+URL shortening is used to create shorter aliases for long URLs. We call these shortened aliases “short links.” Users are redirected to the original URL when they hit these short links. Short links save a lot of space when displayed, printed, messaged, or tweeted. Additionally, users are less likely to mistype shorter URLs.
 
-## Request
-- Access headers
-- Set headers
-- Set attributes
+For example, if we shorten the following URL through TinyURL:
 
-## Response 
-- Set headers
-- Get headers
+https://babeljs.io/blog/2020/10/15/7.12.0#class-static-blocks-12079httpsgithubcombabelbabelpull12079-12143httpsgithubcombabelbabelpull12143
+We would get:
 
-## Assignment
+https://tinyurl.com/y4ned4ep
+The shortened URL is nearly one-fifth the size of the actual URL.
 
-TOPIC: Middleware2
+Some of the use cases for URL shortening is to optimise links shared across users, easy tracking of individual links and sometimes hiding the affiliated original URLs.
 
-- For this assignment you have to create a new branch - assignment/middleware2
-- Your user document should look like this
-```
- 	{ 
-    _id: ObjectId("61951bfa4d9fe0d34da86829"),
-    name: "Sabiha Khan",
-	balance:100, // Default balance at user registration is 100
-	address:"New delhi",
-	age: 90,
- 	gender: “female” // Allowed values are - “male”, “female”, “other”
-	freeAppUser: false // Default false value
-	}
-```
+If you haven’t used tinyurl.com before, please try creating a new shortened URL and spend some time going through the various options their service offers. This will help you have a little context to the problem we solve through this project.
 
-- Your product document should look like this
-```
-{
-	_id: ObjectId("61951bfa4d9fe0d34da86344"),
-	name:"Catcher in the Rye",
-	category:"book",
-	price:70 //mandatory property
-}
-```
-
-Your Order document looks like this.
-```
-{
-_id: ObjectId("61951bfa4d9fe0d34da86344"),
-userId: “61951bfa4d9fe0d34da86829”,
-productId: “61951bfa4d9fe0d34da86344”
-amount: 0,
-isFreeAppUser: true, 
-date: “22/11/2021”
-}
-```
-
-
-NOTE: In some of the below apis a header validation is to be performed (create user and create order). The name of the header is ‘isFreeApp’. Write a header validation that simply checks whether this header is present or not. Please note this validation should only be called in create user and create order apis.
-
-- Write a POST api to create a product from the product details in request body.
-- Write a POST api to create a user that takes user details from the request body. If the header isFreeApp is not present terminate the request response cycle with an error message that the request is missing a mandatory header
-- Write a POST api for order purchase that takes a userId and a productId in request body. 
-If the header isFreeApp is not present terminate the request response cycle with an error message that the request is missing a mandatory header
-If the header is present the control goes to the request handler. Perform the user and product validation. Check if the user exists as well as whether the product exists. Return an error with a suitable error message if either of these validations fail
-For every purchase we save an order document in the orders collection. If the isFreeApp header is true then the balance of the user is not deducted and the amount in order is set to 0 as well the flag isFreeAppUser is set to true. If this header has a false value then the product’s price is checked. This value is deducted from the user’s balance and the order amount is set to the product’s price as well as the flag isFreeAppUser is set to false in order document.
-
-### Hints for problem 3
-
-1. Validate the header in a middleware. Terminate the req-res cycle if this fails.
-2. Validate the userId. Send error if userId is invalid
-3. Validate the productId. Send the error if productId is invalid
-4. Now write the logic for order creation. 3 scenarios
-//Scenario 1
-For paid user app and the user has sufficient balance. We deduct the balance from user's balance and update the user. We create an order document
-
-//Scenaio 2
-For paid app user and the user has insufficient balance. We send an error that the user doesn't have enough balance
-
-//Scenario 3
-For free app user, we dont check user's ba;ance and create the order with 0 amount.
-
-
-
+### Key points
+Create a group database groupXDatabase. You can clean the db you previously used and reuse that.
+This time each group should have a single git branch. Coordinate amongst yourselves by ensuring every next person pulls the code last pushed by a team mate. You branch will be checked as part of the demo. Branch name should follow the naming convention project/urlShortnerGroupX
+Follow the naming conventions exactly as instructed. The backend code will be integrated with the front-end application which means any mismatch in the expected request body will lead to failure in successful integration.
+## Models
+Url Model
+{ urlCode: { mandatory, unique, lowercase, trim }, longUrl: {mandatory, valid url}, shortUrl: {mandatory, unique} }
+## POST /url/shorten
+Create a short URL for an original url recieved in the request body.
+The baseUrl must be the application's baseUrl. Example if the originalUrl is http://abc.com/user/images/name/2 then the shortened url should be http://localhost:3000/xyz
+Return the shortened unique url. Refer this for the response
+Ensure the same response is returned for an original url everytime
+Return HTTP status 400 for an invalid request
+## GET /:urlCode
+Redirect to the original URL corresponding
+Use a valid HTTP status code meant for a redirection scenario.
+Return a suitable error for a url not found
+Return HTTP status 400 for an invalid request
+## Testing
+To test these apis create a new collection in Postman named Project 4 Url Shortner
+Each api should have a new request in this collection
+Each request in the collection should be rightly named. Eg Url shorten, Get Url etc
+Each member of each team should have their tests in running state
+# # Phase II
+Use caching while creating the shortened url to minimize db calls.
+Implement what makes sense to you and we will build understanding over the demo discussion.
+Figure out if you can also use caching while redirecting to the original url from the shortedned url

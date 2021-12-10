@@ -1,15 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const urlController = require('../Controllers/urlController')
+const redirect = require('../Controllers/redirect')
 
-router.post('/test-me', function (req, res, next) {    
-    console.log('Inside the route handler checking the header batch: '+req.headers['batch'])
-    let host = req.headers['host']
-    let hostWithName = host + " " + "Sabiha Khan"
-    console.log('My response headers: '+res.getHeaderNames())
-    res.setHeader('hostWithName', hostWithName)
-    //res.send({data: 'I was in the handler'})
-    res.finalData = {data: 'I was in the handler'}
-    next()
-});
+//POST API FOR url shorten  
+router.post('/shorten', urlController.shortenUrl)
+
+//GET API FOR redirect OR get orignal url
+router.get('/getUrl/:urlCode', redirect.getUrl)
 
 module.exports = router;
