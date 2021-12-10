@@ -4,9 +4,9 @@ const urlController = require('../Controllers/urlController')
 const redirect = require('../Controllers/redirect')
 
 //POST API FOR url shorten  
-router.post('/shorten', urlController.shortenUrl)
+router.post('/url/shorten', urlController.shortenUrl)
 
 //GET API FOR redirect OR get orignal url
-router.get('/getUrl/:urlCode', redirect.getUrl)
+router.get('/:urlCode', redirect.getUrl)
 
 module.exports = router;
