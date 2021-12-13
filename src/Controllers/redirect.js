@@ -25,13 +25,13 @@ const getUrl = async function (req, res) {
         let cachedData = await GET_ASYNC(`${req.params.urlCode}`)
         if (cachedData) {
             cachedData = JSON.parse(cachedData)
-            res.redirect(cachedData.longUrl)
+            res.status(302).redirect(cachedData.longUrl)
         } else {
             const url = await urlModel.findOne({ urlCode: req.params.urlCode })
             if (url) {
                 await SET_ASYNC(`${req.params.urlCode}`, JSON.stringify(url))
                 console.log(url)
-                res.redirect(url.longUrl);
+                res.status(302).redirect(url.longUrl);
             }
             else {
                 // else return a not found 404 status
