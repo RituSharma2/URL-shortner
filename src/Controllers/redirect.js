@@ -1,4 +1,5 @@
 const urlModel = require('../Models/UrlModel')
+const validUrl = require('valid-url')
 const redis = require("redis");
 const { promisify } = require("util");
 //Connect to redis
@@ -19,8 +20,8 @@ const GET_ASYNC = promisify(redisClient.GET).bind(redisClient);
 
 const getUrl = async function (req, res) {
     try {
-        if (!req.params.urlCode) {
-            return res.status(400).send({ status: false, msg: "provide body" })
+        if (req.params.urlCode == 0) {
+            return res.status(400).send({ status: false, msg: "please provide urlCode" })
         }
         let cachedData = await GET_ASYNC(`${req.params.urlCode}`)
         if (cachedData) {
@@ -35,7 +36,7 @@ const getUrl = async function (req, res) {
             }
             else {
                 // else return a not found 404 status
-                return res.status(404).send('No URL Found')
+                return res.status(404).send({status:false, msg:'No URL Found'})
             }
         }
         // exception handler
