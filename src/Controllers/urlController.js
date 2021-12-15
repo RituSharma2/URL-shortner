@@ -6,7 +6,7 @@ const validUrl = require('valid-url')
 const shortenUrl = async function (req, res) {
     try {
         const baseUrl = 'http://localhost:3000'
-        const longUrl = req.body.longUrl
+        const longUrl = req.body.longUrl.trim()
 
         if (req.body && Object.keys(req.body).length == 0) {
             return res.status(400).send({ status: false, msg: "provide body " })
