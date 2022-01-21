@@ -19,7 +19,7 @@ app.use("/", route);
 
 mongoose
   .connect(
-    "mongodb+srv://monty-python:SnYUEY4giV9rekw@functionup-backend-coho.0zpfv.mongodb.net/Group-11RRRR_db?retryWrites=true&w=majority",
+    "mongodb+srv://monty-python:SnYUEY4giV9rekw@functionup-backend-coho.0zpfv.mongodb.net/Group-BackendNinja_db?retryWrites=true&w=majority",
     { useNewUrlParser: true }
   )
   .then(() => console.log("mongodb running and connected"))
